@@ -1,4 +1,4 @@
-# Advent
+# Advent Of Code 2023 🎄
 
 **TODO: Add description**
 
@@ -10,7 +10,7 @@ by adding `advent` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:advent, "~> 0.1.0"}
+    {:advent_of_code, "~> 0.1.0"}
   ]
 end
 ```
