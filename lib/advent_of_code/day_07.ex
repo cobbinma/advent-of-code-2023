@@ -1,6 +1,7 @@
 defmodule AdventOfCode.Day07 do
   @rank_order ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
   @rank_joker_order ["A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J"]
+  @joker "J"
 
   def part1(input) do
     input
@@ -43,39 +44,28 @@ defmodule AdventOfCode.Day07 do
     end
   end
 
-  def calculate_hand(hand) do
-    count =
+  defp calculate_hand(hand) do
+    hand_count =
       Enum.reduce(hand, %{}, fn card, acc ->
         Map.update(acc, card, 1, fn exist -> exist + 1 end)
       end)
 
-    max = Map.values(count) |> Enum.max()
-    size = Kernel.map_size(count)
-
-    case {max, size} do
-      {5, _} -> 7
-      {4, _} -> 6
-      {3, size} when size == 2 -> 5
-      {3, _} -> 4
-      {2, size} when size == 3 -> 3
-      {2, _} -> 2
-      {1, _} -> 1
-    end
+    score_hand_count(hand_count)
   end
 
-  def calculate_joker_hand(hand) do
-    count =
+  defp calculate_joker_hand(hand) do
+    hand_count =
       Enum.reduce(hand, %{}, fn card, acc ->
         Map.update(acc, card, 1, fn exist -> exist + 1 end)
       end)
       |> Kernel.then(fn count ->
-        jokers = Map.get(count, "J")
+        jokers = Map.get(count, @joker)
 
         if jokers == 5 do
           count
         else
           count =
-            Map.delete(count, "J")
+            Map.delete(count, @joker)
 
           {highest, _} =
             Enum.max_by(count, fn {_, v} -> v end)
@@ -84,6 +74,10 @@ defmodule AdventOfCode.Day07 do
         end
       end)
 
+    score_hand_count(hand_count)
+  end
+
+  defp score_hand_count(count) do
     size = Kernel.map_size(count)
     max = Map.values(count) |> Enum.max()
 
