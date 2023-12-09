@@ -33,11 +33,10 @@ defmodule AdventOfCode.Day09 do
     next =
       current |> Enum.chunk_every(2, 1, :discard) |> Enum.map(fn [a, b | _] -> b - a end)
 
-    if Enum.all?(Enum.map(next, fn difference -> difference == 0 end)) do
+    if Enum.all?(Enum.map(next, &(&1 == 0))) do
       differences
     else
-      differences = [next | differences]
-      differences(next, differences)
+      differences(next, [next | differences])
     end
   end
 end
