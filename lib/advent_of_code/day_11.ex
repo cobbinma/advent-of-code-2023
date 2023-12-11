@@ -1,18 +1,17 @@
 defmodule AdventOfCode.Day11 do
   def part1(input) do
     input
-    |> String.split("\n", trim: true)
-    |> Enum.with_index()
-    |> Enum.flat_map(fn {line, y} ->
-      String.graphemes(line)
-      |> Enum.with_index()
-      |> Enum.filter(fn {c, _} -> c != "." end)
-      |> Enum.map(fn {_, x} -> {x, y} end)
-    end)
+    |> galaxies()
     |> distances(2)
   end
 
   def part2(input) do
+    input
+    |> galaxies()
+    |> distances(10)
+  end
+
+  defp galaxies(input) do
     input
     |> String.split("\n", trim: true)
     |> Enum.with_index()
@@ -22,7 +21,6 @@ defmodule AdventOfCode.Day11 do
       |> Enum.filter(fn {c, _} -> c != "." end)
       |> Enum.map(fn {_, x} -> {x, y} end)
     end)
-    |> distances(10)
   end
 
   defp distances(galaxies, factor) do
